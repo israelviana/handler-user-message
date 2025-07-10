@@ -14,7 +14,6 @@ RUN go build -o main ./cmd/server
 FROM alpine:latest
 
 WORKDIR /app
-COPY .env .
 
 COPY --from=builder /app/main .
 
