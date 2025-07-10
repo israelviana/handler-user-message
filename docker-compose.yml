@@ -3,7 +3,7 @@ version: '3.8'
 
 services:
   meta-grpc-server:
-    image: israelviana/meta-integration:latest
+    image: mokusei/meta-integration:latest
     container_name: meta-grpc-server
     ports:
       - "50051:50051"
