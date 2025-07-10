@@ -4,44 +4,32 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/joho/godotenv"
 	"log"
+	grpcHandler "meta-integration/cmd/api/grpc"
+	pb "meta-integration/gen/proto"
+	"meta-integration/internal/service"
 	wpUseCase "meta-integration/internal/usecase/whatsapp"
 	"net"
 	"os"
 
 	"google.golang.org/grpc"
-	cmdGrpc "meta-integration/cmd/api/grpc"
-	pb "meta-integration/gen/proto"
-	"meta-integration/internal/service"
 )
 
 func main() {
-	_ = godotenv.Load()
-
-	baseURL, isValid := os.LookupEnv("BASE_URL_META")
-	if !isValid {
-		log.Fatal("Error loading BASE_URL_META env")
-	}
-	_, isValid = os.LookupEnv("ACCESS_TOKEN_META")
-	if !isValid {
-		log.Fatal("Error loading ACCESS_TOKEN_META env")
-	}
-	accessToken, isValid := os.LookupEnv("BACKUP_ACCESS_TOKEN_META")
-	if !isValid {
-		log.Fatal("Error loading BACKUP_ACCESS_TOKEN_META env")
-	}
-	fromNumberID, isValid := os.LookupEnv("FROM_NUMBER_ID_META")
-	if !isValid {
-		log.Fatal("Error loading FROM_NUMBER_META env")
-	}
-	whatsappBusinessAccountId, isValid := os.LookupEnv("WHATSAPP_BUSINESS_ACCOUNT_ID_META")
-	if !isValid {
-		log.Fatal("Error loading WHATSAPP_BUSINESS_ACCOUNT_ID_META env")
+	if os.Getenv("RUNNING_IN_DOCKER") != "true" {
+		if err := godotenv.Load(); err != nil {
+			log.Println("⚠️ Alert: .env dont have loaded.")
+		}
 	}
 
-	restyClient := resty.New()
-	newWpService := service.NewWhatsappService(restyClient, baseURL, accessToken, fromNumberID, whatsappBusinessAccountId)
+	baseURL := getEnvOrFail("BASE_URL_META")
+	accessToken := getEnvOrFail("ACCESS_TOKEN_META")
+	fromNumberID := getEnvOrFail("FROM_NUMBER_ID_META")
+	whatsappBusinessAccountID := getEnvOrFail("WHATSAPP_BUSINESS_ACCOUNT_ID_META")
+
+	client := resty.New()
+	newWpService := service.NewWhatsappService(client, baseURL, accessToken, fromNumberID, whatsappBusinessAccountID)
 	newWpUseCase := wpUseCase.NewWhatsappUseCase(newWpService)
-	newGrpcHandler := cmdGrpc.NewGrpcHandler(newWpUseCase)
+	newGrpcHandler := grpcHandler.NewGrpcHandler(newWpUseCase)
 
 	grpcServer := grpc.NewServer()
 	pb.RegisterWhatsappServiceServer(grpcServer, newGrpcHandler)
@@ -51,8 +39,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Println("gRPC server running on :50051")
-	if err = grpcServer.Serve(listener); err != nil {
+	log.Println("✅ gRPC server running on :50051")
+	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func getEnvOrFail(key string) string {
+	val, exists := os.LookupEnv(key)
+	if !exists {
+		log.Fatalf("❌ Env not found: %s", key)
+	}
+	return val
 }
