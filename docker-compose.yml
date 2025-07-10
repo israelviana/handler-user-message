@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  meta-grpc-server:
+    image: mokusei13/meta-integration:latest
+    container_name: meta-grpc-server
+    restart: unless-stopped
+
+    ports:
+      - "50051:50051"
+
+    environment:
+      BASE_URL_META: ${BASE_URL_META}
+      ACCESS_TOKEN_META: ${ACCESS_TOKEN_META}
+      BACKUP_ACCESS_TOKEN_META: ${BACKUP_ACCESS_TOKEN_META}
+      FROM_NUMBER_ID_META: ${FROM_NUMBER_ID_META}
+      WHATSAPP_BUSINESS_ACCOUNT_ID_META: ${WHATSAPP_BUSINESS_ACCOUNT_ID_META}
