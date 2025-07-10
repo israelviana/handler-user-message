@@ -49,7 +49,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	pb.RegisterWhatsappServiceServer(grpcServer, newGrpcHandler)
 
-	listener, err := net.Listen("tcp", ":5051")
+	listener, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatal(err)
 	}
