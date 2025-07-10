@@ -29,4 +29,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: israelviana/meta-integration:latest
+          tags: mokusei13/meta-integration:latest
