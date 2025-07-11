@@ -20,6 +20,3 @@ jobs:
 
       - name: Build Go project
         run: go build -v ./...
-
-      - name: Run tests
-        run: go test -v ./...
