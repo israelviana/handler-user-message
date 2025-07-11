@@ -1,4 +1,4 @@
-package main
+package rest
 
 import (
 	wpUsecase "meta-integration/internal/usecase/whatsapp"
