@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/go-resty/resty/v2"
+	"google.golang.org/grpc/reflection"
 	"log"
 	grpcHandler "meta-integration/cmd/api/grpc"
 	pb "meta-integration/gen/proto"
@@ -31,7 +32,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("❌ Failed to listen on port 50051: %v", err)
 	}
-
+	reflection.Register(server)
 	log.Println("✅ gRPC server running on :50051")
 	if err := server.Serve(listener); err != nil {
 		log.Fatalf("❌ Failed to serve gRPC: %v", err)
