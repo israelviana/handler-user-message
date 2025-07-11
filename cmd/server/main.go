@@ -14,10 +14,10 @@ import (
 )
 
 func main() {
-	baseURL := getEnvOrFail("BASE_URL_META")
-	accessToken := getEnvOrFail("ACCESS_TOKEN_META")
-	fromNumberID := getEnvOrFail("FROM_NUMBER_ID_META")
-	whatsappBusinessAccountID := getEnvOrFail("WHATSAPP_BUSINESS_ACCOUNT_ID_META")
+	baseURL := os.Getenv("BASE_URL_META")
+	accessToken := os.Getenv("ACCESS_TOKEN_META")
+	fromNumberID := os.Getenv("FROM_NUMBER_ID_META")
+	whatsappBusinessAccountID := os.Getenv("WHATSAPP_BUSINESS_ACCOUNT_ID_META")
 
 	client := resty.New()
 	newWpService := service.NewWhatsappService(client, baseURL, accessToken, fromNumberID, whatsappBusinessAccountID)
@@ -36,12 +36,4 @@ func main() {
 	if err := server.Serve(listener); err != nil {
 		log.Fatalf("❌ Failed to serve gRPC: %v", err)
 	}
-}
-
-func getEnvOrFail(key string) string {
-	val, exists := os.LookupEnv(key)
-	if !exists {
-		log.Fatalf("❌ Required environment variable %s is missing", key)
-	}
-	return val
 }
