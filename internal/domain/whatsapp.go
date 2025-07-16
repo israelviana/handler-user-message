@@ -182,3 +182,14 @@ type MetaCurrency struct {
 	Code          string  `json:"code"`
 	Amount1000    float64 `json:"amount_1000"`
 }
+
+type MetaWebhookPayload struct {
+	Object string `json:"object"`
+	Entry  []struct {
+		ID      string `json:"id"`
+		Changes []struct {
+			Field string                 `json:"field"`
+			Value map[string]interface{} `json:"value"`
+		} `json:"changes"`
+	} `json:"entry"`
+}
