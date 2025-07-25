@@ -183,10 +183,16 @@ type MetaCurrency struct {
 	Amount1000    float64 `json:"amount_1000"`
 }
 
+// WEBHOOK SUBSCRIPTION FIELDS
+const (
+	MessageTemplateStatusUpdateField = "message_template_status_update"
+)
+
 type MetaWebhookPayload struct {
 	Object string `json:"object"`
 	Entry  []struct {
 		ID      string `json:"id"`
+		Time    int64  `json:"time"`
 		Changes []struct {
 			Field string                 `json:"field"`
 			Value map[string]interface{} `json:"value"`

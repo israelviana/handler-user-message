@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"meta-integration/cmd/api/rest"
 	"meta-integration/cmd/api/webhook"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -13,7 +14,7 @@ func main() {
 
 	rHandler := rest.NewRestHandler(router)
 	rHandler.InitRestHandler()
-	err := router.Run(":8080")
+	err := router.Run(":50051")
 	if err != nil {
 		return
 	}
