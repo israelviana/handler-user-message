@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: meta-grpc-server
+    container_name: meta-server
     restart: unless-stopped
 
     ports:
