@@ -4,7 +4,6 @@ package proto;
 
 option go_package = "meta-integration/gen/proto/meta;meta";
 
-// Enums
 enum Category {
   CATEGORY_UNSPECIFIED = 0;
   MARKETING = 1;
@@ -12,7 +11,6 @@ enum Category {
   AUTHENTICATION = 3;
 }
 
-// Basic Messages
 message MetaRegisterNumberBody {
   string messaging_product = 1;
 }
@@ -69,11 +67,10 @@ message MetaCreateTemplateResponse {
   string category = 3;
 }
 
-// Template creation
 message MetaCreateTemplateBody {
   string name = 1;
   Category category = 2;
-  string parameter_format = 3; // `interface{}` cannot be represented directly, use string or JSON
+  string parameter_format = 3;
   string language = 4;
   repeated MetaTemplateComponent components = 5;
 }
@@ -98,7 +95,6 @@ message MetaTemplateComponentExample {
   repeated string body_text = 2;
 }
 
-// Send WhatsApp Message with Template
 message MetaSendWhatsappMessageWithTemplateResponse {
   string messaging_product = 1;
   repeated MetaContact contacts = 2;
