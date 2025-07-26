@@ -5,7 +5,7 @@ import (
 	metaPb "meta-integration/gen/proto"
 	"meta-integration/internal/domain"
 	wpUsecase "meta-integration/internal/usecase/whatsapp"
-	"meta-integration/utils"
+	"meta-integration/pkg/transformer"
 )
 
 type GrpcHandler struct {
@@ -18,7 +18,7 @@ func NewGrpcHandler(whatsappUseCase wpUsecase.IWhatsappUseCase) *GrpcHandler {
 }
 
 func (h *GrpcHandler) SendWhatsappMessage(ctx context.Context, req *metaPb.MetaSendWhatsappMessageBody) (*metaPb.MetaSendWhatsappMessageWithTemplateResponse, error) {
-	dto, err := utils.JsonMarshalToUnmarshal[domain.MetaSendWhatsappMessageBody](req)
+	dto, err := transformer.EncodeDecode[domain.MetaSendWhatsappMessageBody](req)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +28,7 @@ func (h *GrpcHandler) SendWhatsappMessage(ctx context.Context, req *metaPb.MetaS
 		return nil, err
 	}
 
-	proto, err := utils.JsonMarshalToUnmarshal[metaPb.MetaSendWhatsappMessageWithTemplateResponse](response)
+	proto, err := transformer.EncodeDecode[metaPb.MetaSendWhatsappMessageWithTemplateResponse](response)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (h *GrpcHandler) SendWhatsappMessage(ctx context.Context, req *metaPb.MetaS
 }
 
 func (h *GrpcHandler) CreateWhatsappTemplate(ctx context.Context, req *metaPb.MetaCreateTemplateBody) (*metaPb.MetaCreateTemplateResponse, error) {
-	dto, err := utils.JsonMarshalToUnmarshal[domain.MetaCreateTemplateBody](req)
+	dto, err := transformer.EncodeDecode[domain.MetaCreateTemplateBody](req)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (h *GrpcHandler) CreateWhatsappTemplate(ctx context.Context, req *metaPb.Me
 		return nil, err
 	}
 
-	proto, err := utils.JsonMarshalToUnmarshal[metaPb.MetaCreateTemplateResponse](response)
+	proto, err := transformer.EncodeDecode[metaPb.MetaCreateTemplateResponse](response)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (h *GrpcHandler) CreateWhatsappTemplate(ctx context.Context, req *metaPb.Me
 }
 
 func (h *GrpcHandler) ListWhatsappTemplates(ctx context.Context, req *metaPb.MetaListTemplatesParams) (*metaPb.MetaListTemplatesResponse, error) {
-	dto, err := utils.JsonMarshalToUnmarshal[domain.MetaListTemplatesParams](req)
+	dto, err := transformer.EncodeDecode[domain.MetaListTemplatesParams](req)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (h *GrpcHandler) ListWhatsappTemplates(ctx context.Context, req *metaPb.Met
 		return nil, err
 	}
 
-	proto, err := utils.JsonMarshalToUnmarshal[metaPb.MetaListTemplatesResponse](response)
+	proto, err := transformer.EncodeDecode[metaPb.MetaListTemplatesResponse](response)
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +84,7 @@ func (h *GrpcHandler) ListWhatsappTemplates(ctx context.Context, req *metaPb.Met
 }
 
 func (h *GrpcHandler) DeleteWhatsappTemplate(ctx context.Context, req *metaPb.MetaDeleteTemplateParams) (*metaPb.MetaDeleteWhatsappTemplateResponse, error) {
-	dto, err := utils.JsonMarshalToUnmarshal[domain.MetaDeleteTemplateParams](req)
+	dto, err := transformer.EncodeDecode[domain.MetaDeleteTemplateParams](req)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (h *GrpcHandler) DeleteWhatsappTemplate(ctx context.Context, req *metaPb.Me
 		return nil, err
 	}
 
-	proto, err := utils.JsonMarshalToUnmarshal[metaPb.MetaDeleteWhatsappTemplateResponse](response)
+	proto, err := transformer.EncodeDecode[metaPb.MetaDeleteWhatsappTemplateResponse](response)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (h *GrpcHandler) DeleteWhatsappTemplate(ctx context.Context, req *metaPb.Me
 }
 
 func (h *GrpcHandler) EditWhatsappTemplate(ctx context.Context, req *metaPb.MetaEditTemplateBody) (*metaPb.MetaEditTemplateResponse, error) {
-	dto, err := utils.JsonMarshalToUnmarshal[domain.MetaEditTemplateBody](req)
+	dto, err := transformer.EncodeDecode[domain.MetaEditTemplateBody](req)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +118,7 @@ func (h *GrpcHandler) EditWhatsappTemplate(ctx context.Context, req *metaPb.Meta
 		return nil, err
 	}
 
-	proto, err := utils.JsonMarshalToUnmarshal[metaPb.MetaEditTemplateResponse](response)
+	proto, err := transformer.EncodeDecode[metaPb.MetaEditTemplateResponse](response)
 	if err != nil {
 		return nil, err
 	}

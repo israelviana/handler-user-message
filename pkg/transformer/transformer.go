@@ -1,8 +1,8 @@
-package utils
+package transformer
 
 import "encoding/json"
 
-func JsonMarshalToUnmarshal[T any](i interface{}) (*T, error) {
+func EncodeDecode[T any](i interface{}) (*T, error) {
 	rawData, err := json.Marshal(i)
 	if err != nil {
 		return nil, err
