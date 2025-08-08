@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/go-resty/resty/v2"
-	"meta-integration/internal/domain"
 	"strings"
+
+	"meta-integration/internal/domain"
+
+	"github.com/go-resty/resty/v2"
 )
 
 type whatsappService struct {
@@ -36,7 +38,7 @@ func NewWhatsappService(client *resty.Client, baseURL, accessToken, fromNumberID
 }
 
 func (r *whatsappService) SendWhatsappMessage(ctx context.Context, message domain.MetaSendWhatsappMessageBody) (*domain.MetaSendWhatsappMessageWithTemplateResponse, error) {
-	// /<WHATSAPP_BUSINESS_PHONE_NUMBER_ID>/messages
+	///<WHATSAPP_BUSINESS_PHONE_NUMBER_ID>/messages
 	url := fmt.Sprintf("%s/%s/messages", r.baseURL, r.fromNumberID)
 
 	resp := new(domain.MetaSendWhatsappMessageWithTemplateResponse)
