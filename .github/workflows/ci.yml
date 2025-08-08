@@ -7,6 +7,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: self-hosted
+    permissions:
+      packages: write
+      contents: read
 
     steps:
       - name: Checkout code (with submodules)
