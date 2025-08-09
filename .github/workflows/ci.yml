@@ -40,10 +40,13 @@ jobs:
 
       - name: Redeploy Stack via Portainer API
         run: |
-          curl -X POST "$PORTAINER_URL/api/stacks/$STACK_ID/git/redeploy" \
-            -H "Authorization: Bearer $PORTAINER_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{"pullImage": true}'
+          curl -X PUT "$PORTAINER_URL/api/stacks/$STACK_ID/git/redeploy" \
+             -H "Authorization: Bearer $PORTAINER_TOKEN" \
+             -H "Content-Type: application/json" \
+             -d '{
+             "pullImage": true,
+             "prune": true
+           }'
         env:
           PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
           PORTAINER_TOKEN: ${{ secrets.PORTAINER_TOKEN }}
