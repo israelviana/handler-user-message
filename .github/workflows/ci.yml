@@ -40,7 +40,7 @@ jobs:
 
       - name: Redeploy Stack via Portainer API
         run: |
-          curl -X PUT "$PORTAINER_URL/api/stacks/$STACK_ID/git/redeploy?endpointId=3" \
+          curl -X PUT "$PORTAINER_URL/api/stacks/$STACK_ID/git/redeploy?endpointId=$ENDPOINT_ID" \
              -H "X-API-Key:$PORTAINER_TOKEN" \
              -H "Content-Type: application/json" \
              -d '{
@@ -51,3 +51,4 @@ jobs:
           PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
           PORTAINER_TOKEN: ${{ secrets.PORTAINER_TOKEN }}
           STACK_ID: ${{ secrets.PORTAINER_STACK_ID }}
+          ENDPOINT_ID: ${{ secrets.ENDPOINT_ID }}
