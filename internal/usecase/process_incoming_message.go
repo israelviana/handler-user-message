@@ -37,11 +37,11 @@ func (uc *ProcessIncomingMessageUseCase) Run(ctx context.Context, message string
 	_, err = uc.whatsappClient.SendWhatsappMessage(ctx, whatsapp.MetaSendWhatsappMessageBody{
 		MessagingProduct: "whatsapp",
 		RecipientType:    "individual",
-		To:               "85997267265",
+		To:               "85994236520",
 		Type:             "text",
 		Text: &whatsapp.MessageText{
 			PreviewUrl: false,
-			Body:       "Respondendo com sucesso",
+			Body:       "mamaco",
 		},
 	})
 	if err != nil {
