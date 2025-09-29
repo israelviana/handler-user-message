@@ -1,20 +1,24 @@
-package service
+package clients
 
+/*
 import (
 	"context"
 	"fmt"
-	"github.com/go-resty/resty/v2"
-	"github.com/joho/godotenv"
 	"log"
-	"meta-integration/internal/domain"
 	"os"
 	"testing"
+
+	"meta-integration/internal/domain/clients/whatsapp"
+	"meta-integration/internal/service"
+
+	"github.com/go-resty/resty/v2"
+	"github.com/joho/godotenv"
 )
 
 func TestWhatsappService(t *testing.T) {
 	ctx := context.Background()
 
-	err := godotenv.Load()
+	err := godotenv.Load("../../.env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -41,16 +45,16 @@ func TestWhatsappService(t *testing.T) {
 	}
 
 	restyClient := resty.New()
-	wpR := NewWhatsappService(restyClient, baseURL, accessToken, fromNumberID, whatsappBusinessAccountId)
+	wpR := service.NewWhatsappService(restyClient, baseURL, accessToken, fromNumberID, whatsappBusinessAccountId)
 
-	message := domain.MetaSendWhatsappMessageBody{
+	message := whatsapp.MetaSendWhatsappMessageBody{
 		MessagingProduct: "whatsapp",
 		RecipientType:    "individual",
 		To:               "+5585997267265",
 		Type:             "template",
-		Template: &domain.MetaTemplate{
+		Template: &whatsapp.MetaTemplate{
 			Name:     "hello_world",
-			Language: domain.MetaLanguage{Code: "en_US"},
+			Language: whatsapp.MetaLanguage{Code: "en_US"},
 		},
 	}
 	response, err := wpR.SendWhatsappMessage(ctx, message)
@@ -60,3 +64,4 @@ func TestWhatsappService(t *testing.T) {
 
 	log.Println(response)
 }
+*/

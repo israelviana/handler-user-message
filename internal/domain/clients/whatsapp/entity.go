@@ -1,4 +1,4 @@
-package domain
+package whatsapp
 
 type MetaRegisterNumberBody struct {
 	MessagingProduct string `json:"messaging_product"`
@@ -146,6 +146,7 @@ type MetaSendWhatsappMessageBody struct {
 	To               string        `json:"to"`
 	Type             string        `json:"type"`
 	Template         *MetaTemplate `json:"template,omitempty"` //type: template
+	Text             *MessageText  `json:"text,omitempty"`     //type: text
 }
 
 type MetaTemplate struct {
@@ -189,13 +190,50 @@ const (
 )
 
 type MetaWebhookPayload struct {
-	Object string `json:"object"`
-	Entry  []struct {
-		ID      string `json:"id"`
-		Time    int64  `json:"time"`
-		Changes []struct {
-			Field string                 `json:"field"`
-			Value map[string]interface{} `json:"value"`
-		} `json:"changes"`
-	} `json:"entry"`
+	Object string  `json:"object"`
+	Entry  []Entry `json:"entry"`
+}
+
+type Entry struct {
+	Id      string   `json:"id"`
+	Time    int64    `json:"time"`
+	Changes []Change `json:"changes"`
+}
+type Change struct {
+	Field string     `json:"field"`
+	Value ValueField `json:"value"`
+}
+
+type ValueField struct {
+	MessagingProduct string    `json:"messaging_product"`
+	Metadata         Metadata  `json:"metadata"`
+	Contacts         []Contact `json:"contacts"`
+	Messages         []Message `json:"messages"`
+}
+
+type Metadata struct {
+	DisplayPhoneNumber string `json:"display_phone_number"`
+	PhoneNumberID      string `json:"phone_number_id"`
+}
+
+type Contact struct {
+	Profile Profile `json:"profile"`
+	WAID    string  `json:"wa_id"`
+}
+
+type Profile struct {
+	Name string `json:"name"`
+}
+
+type Message struct {
+	From      string       `json:"from"`
+	ID        string       `json:"id"`
+	Timestamp string       `json:"timestamp"`
+	Type      string       `json:"type"`
+	Text      *MessageText `json:"text,omitempty"` // opcional: só vem se type="text"
+}
+
+type MessageText struct {
+	PreviewUrl bool   `json:"preview_url"`
+	Body       string `json:"body"`
 }

@@ -20,11 +20,11 @@ func NewRestHandler(router *gin.Engine) *RestHandler {
 }
 
 func (r *RestHandler) InitRestHandler() {
-	r.router.GET("/spiral", r.Spiral)
+	r.router.GET("/health", r.health)
 }
 
-func (r *RestHandler) Spiral(c *gin.Context) {
+func (r *RestHandler) health(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"message": "SOSPITA - O símbolo da espiral é comumente considerado o sinal da vida e representa o ciclo da vida como um todo, desde o nascimento. vida, morte e, finalmente, renascimento. Use a espiral em seu ofício para reverenciar e honrar a vida, pois as espirais podem ser encontradas em muitos lugares da natureza (galáxias e conchas).",
+		"message": "play.sospita-craft.me",
 	})
 }

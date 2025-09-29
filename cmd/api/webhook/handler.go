@@ -1,11 +1,16 @@
 package webhook
 
 import (
+	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"meta-integration/internal/domain"
 	"net/http"
 	"os"
+	"time"
+
+	"meta-integration/internal/domain/clients/whatsapp"
+	"meta-integration/internal/usecase/tito"
+
+	"github.com/gin-gonic/gin"
 )
 
 type IWebhookHandler interface {
@@ -15,12 +20,14 @@ type IWebhookHandler interface {
 }
 
 type WebhookHandler struct {
-	router *gin.Engine
+	router                 *gin.Engine
+	processIncomingMessage *tito.ProcessIncomingMessageUseCase
 }
 
-func NewWebhookHandler(router *gin.Engine) IWebhookHandler {
+func NewWebhookHandler(router *gin.Engine, processIncomingMessageUC *tito.ProcessIncomingMessageUseCase) IWebhookHandler {
 	return &WebhookHandler{
-		router: router,
+		router:                 router,
+		processIncomingMessage: processIncomingMessageUC,
 	}
 }
 
@@ -45,7 +52,7 @@ func (w *WebhookHandler) VerifyWebhook(c *gin.Context) {
 }
 
 func (w *WebhookHandler) HandleWebhook(c *gin.Context) {
-	var payload domain.MetaWebhookPayload
+	var payload whatsapp.MetaWebhookPayload
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid payload"})
 		return
@@ -55,11 +62,31 @@ func (w *WebhookHandler) HandleWebhook(c *gin.Context) {
 		for _, change := range entry.Changes {
 			switch change.Field {
 			case "messages":
-				fmt.Println(change.Value)
+				ch := change
+				ctx := c.Copy()
+
+				go func(ch whatsapp.Change, ctx *gin.Context) {
+					defer func() {
+						if r := recover(); r != nil {
+							fmt.Println("panic recovered in processIncomingMessage:", r)
+						}
+					}()
+
+					jobCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+					defer cancel()
+
+					for _, message := range ch.Value.Messages {
+						if err := w.processIncomingMessage.Run(jobCtx, message.Text.Body); err != nil {
+							fmt.Println("error processing incoming message:", err)
+						}
+					}
+
+				}(ch, ctx)
+
 			case "statuses":
 				fmt.Println(change.Value)
 			default:
-
+				fmt.Println(change.Value)
 			}
 		}
 	}
