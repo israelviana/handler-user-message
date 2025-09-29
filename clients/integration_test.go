@@ -8,8 +8,8 @@ import (
 	"os"
 	"testing"
 
-	"meta-integration/internal/domain/clients/whatsapp"
-	"meta-integration/internal/service"
+	"handler-user-message/internal/domain/clients/whatsapp"
+	"handler-user-message/internal/service"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/joho/godotenv"

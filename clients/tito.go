@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"meta-integration/internal/domain/clients/tito"
+	"handler-user-message/internal/domain/clients/tito"
 
 	"github.com/go-resty/resty/v2"
 )

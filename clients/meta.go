@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"meta-integration/internal/domain/clients/whatsapp"
+	"handler-user-message/internal/domain/clients/whatsapp"
 
 	"github.com/go-resty/resty/v2"
 )

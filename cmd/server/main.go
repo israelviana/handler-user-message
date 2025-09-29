@@ -3,10 +3,10 @@ package main
 import (
 	"os"
 
-	"meta-integration/clients"
-	"meta-integration/cmd/api/rest"
-	"meta-integration/cmd/api/webhook"
-	"meta-integration/internal/usecase/tito"
+	"handler-user-message/clients"
+	"handler-user-message/cmd/api/rest"
+	"handler-user-message/cmd/api/webhook"
+	"handler-user-message/internal/usecase"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-resty/resty/v2"
@@ -22,7 +22,7 @@ func main() {
 
 	titoClient := clients.NewTitoClient(baseURL, accessToken)
 	whatsappClient := clients.NewWhatsappClient(resty.New(), baseURL, accessToken, fromNumberID, whatsappBusinessAccountID)
-	processIncomingMessageUseCase := tito.NewProcessIncomingMessageUseCase(titoClient, whatsappClient)
+	processIncomingMessageUseCase := usecase.NewProcessIncomingMessageUseCase(titoClient, whatsappClient)
 	wHandler := webhook.NewWebhookHandler(router, processIncomingMessageUseCase)
 	wHandler.InitWebhookHandler()
 

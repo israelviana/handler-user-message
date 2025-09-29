@@ -1,4 +1,4 @@
-module meta-integration
+module handler-user-message
 
 go 1.24
 

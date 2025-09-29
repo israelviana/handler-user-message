@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"meta-integration/internal/domain/clients/whatsapp"
-	"meta-integration/internal/usecase/tito"
+	"handler-user-message/internal/domain/clients/whatsapp"
+	"handler-user-message/internal/usecase"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,10 +21,10 @@ type IWebhookHandler interface {
 
 type WebhookHandler struct {
 	router                 *gin.Engine
-	processIncomingMessage *tito.ProcessIncomingMessageUseCase
+	processIncomingMessage *usecase.ProcessIncomingMessageUseCase
 }
 
-func NewWebhookHandler(router *gin.Engine, processIncomingMessageUC *tito.ProcessIncomingMessageUseCase) IWebhookHandler {
+func NewWebhookHandler(router *gin.Engine, processIncomingMessageUC *usecase.ProcessIncomingMessageUseCase) IWebhookHandler {
 	return &WebhookHandler{
 		router:                 router,
 		processIncomingMessage: processIncomingMessageUC,
@@ -44,6 +44,7 @@ func (w *WebhookHandler) VerifyWebhook(c *gin.Context) {
 	expectedToken := os.Getenv("META_VERIFY_TOKEN")
 
 	if mode == "subscribe" && token == expectedToken {
+		fmt.Println("WEBHOOK_VERIFIED")
 		c.String(http.StatusOK, challenge)
 		return
 	}
@@ -76,6 +77,7 @@ func (w *WebhookHandler) HandleWebhook(c *gin.Context) {
 					defer cancel()
 
 					for _, message := range ch.Value.Messages {
+						fmt.Println(message.Text.Body)
 						if err := w.processIncomingMessage.Run(jobCtx, message.Text.Body); err != nil {
 							fmt.Println("error processing incoming message:", err)
 						}

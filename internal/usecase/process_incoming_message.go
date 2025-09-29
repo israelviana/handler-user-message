@@ -1,11 +1,11 @@
-package tito
+package usecase
 
 import (
 	"context"
 
-	"meta-integration/internal/domain/clients/tito"
-	"meta-integration/internal/domain/clients/whatsapp"
-	_ "meta-integration/internal/domain/clients/whatsapp"
+	"handler-user-message/internal/domain/clients/tito"
+	"handler-user-message/internal/domain/clients/whatsapp"
+	_ "handler-user-message/internal/domain/clients/whatsapp"
 )
 
 type iTitoClient interface {
