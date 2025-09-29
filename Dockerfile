@@ -20,8 +20,8 @@ COPY --from=builder /app/main .
 RUN adduser -D appuser
 USER appuser
 
-LABEL org.opencontainers.image.source="https://github.com/israelviana/meta-cloud-api"
-LABEL org.opencontainers.image.description="Meta gRPC Server"
+LABEL org.opencontainers.image.source="https://github.com/israelviana/handler-user-message"
+LABEL org.opencontainers.image.description="Service for handling user messages"
 LABEL org.opencontainers.image.version="1.0"
 
 EXPOSE 50051

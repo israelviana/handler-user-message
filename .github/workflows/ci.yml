@@ -1,4 +1,4 @@
-name: CI/CD - Meta Integration
+name: CI/CD - Handler User Message
 
 on:
   push:
