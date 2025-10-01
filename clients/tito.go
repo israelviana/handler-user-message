@@ -3,6 +3,7 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"handler-user-message/internal/domain/clients/tito"
@@ -39,6 +40,9 @@ func (c *titoClient) SendMessage(ctx context.Context, message string) (interface
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println(string(req))
+	fmt.Println(c.resty.BaseURL)
 
 	var response interface{}
 	_, err = c.resty.R().SetContext(ctx).SetBody(&req).SetResult(&response).Post("/chat")
