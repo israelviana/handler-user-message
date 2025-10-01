@@ -18,7 +18,6 @@ func NewTitoClient(url, apiKey string) tito.ITitoClient {
 	return &titoClient{
 		resty: resty.New().
 			SetBaseURL(url).
-			SetHeader("X-CMC_PRO_API_KEY", apiKey).
 			SetHeader("Accept", "application/json").
 			SetTimeout(15 * time.Second).
 			SetRetryCount(3).
@@ -28,13 +27,21 @@ func NewTitoClient(url, apiKey string) tito.ITitoClient {
 }
 
 func (c *titoClient) SendMessage(ctx context.Context, message string) (interface{}, error) {
-	reqBody, err := json.Marshal(message)
+	type RequestBody struct {
+		Input string `json:"input"`
+	}
+
+	reqBody := RequestBody{
+		Input: message,
+	}
+
+	req, err := json.Marshal(reqBody)
 	if err != nil {
 		return nil, err
 	}
 
 	var response interface{}
-	_, err = c.resty.R().SetContext(ctx).SetBody(&reqBody).SetResult(&response).Post("/chat")
+	_, err = c.resty.R().SetContext(ctx).SetBody(&req).SetResult(&response).Post("/chat")
 	if err != nil {
 		return nil, err
 	}
