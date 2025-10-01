@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"handler-user-message/internal/domain/clients/tito"
 	"handler-user-message/internal/domain/clients/whatsapp"
@@ -31,7 +32,9 @@ func NewProcessIncomingMessageUseCase(titoClient tito.ITitoClient, whatsappClien
 
 func (uc *ProcessIncomingMessageUseCase) Run(ctx context.Context, message string) error {
 	res, err := uc.titoClient.SendMessage(ctx, message)
+	log.Println(message)
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 
