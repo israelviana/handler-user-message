@@ -36,7 +36,7 @@ func (c *titoClient) SendMessage(ctx context.Context, message string) (interface
 	}
 
 	var response interface{}
-	_, err := c.resty.R().SetContext(ctx).SetBody(reqBody).SetResult(&response).Post("/chat")
+	_, err := c.resty.R().SetContext(ctx).SetBody(&reqBody).SetResult(&response).Post("/chat")
 	if err != nil {
 		log.Println(err)
 		return nil, err
