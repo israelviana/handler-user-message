@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 
 	"handler-user-message/internal/domain/clients/tito"
 	"handler-user-message/internal/domain/clients/whatsapp"
@@ -29,19 +30,21 @@ func NewProcessIncomingMessageUseCase(titoClient tito.ITitoClient, whatsappClien
 }
 
 func (uc *ProcessIncomingMessageUseCase) Run(ctx context.Context, message string) error {
-	_, err := uc.titoClient.SendMessage(ctx, message)
+	res, err := uc.titoClient.SendMessage(ctx, message)
 	if err != nil {
 		return err
 	}
 
+	s := fmt.Sprintf("%v", res)
+
 	_, err = uc.whatsappClient.SendWhatsappMessage(ctx, whatsapp.MetaSendWhatsappMessageBody{
 		MessagingProduct: "whatsapp",
 		RecipientType:    "individual",
-		To:               "85994236520",
+		To:               "85997267265",
 		Type:             "text",
 		Text: &whatsapp.MessageText{
 			PreviewUrl: false,
-			Body:       "mamaco",
+			Body:       s,
 		},
 	})
 	if err != nil {
