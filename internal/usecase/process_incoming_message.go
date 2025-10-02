@@ -30,7 +30,7 @@ func NewProcessIncomingMessageUseCase(titoClient tito.ITitoClient, whatsappClien
 	}
 }
 
-func (uc *ProcessIncomingMessageUseCase) Run(ctx context.Context, message string) error {
+func (uc *ProcessIncomingMessageUseCase) Run(ctx context.Context, message string, sender string) error {
 	res, err := uc.titoClient.SendMessage(ctx, message)
 	if err != nil {
 		log.Println(err)
