@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"strings"
 
 	"handler-user-message/internal/domain/clients/whatsapp"
@@ -43,9 +44,11 @@ func (r *whatsappClient) SendWhatsappMessage(ctx context.Context, message whatsa
 		Post(url)
 
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 	if httpResp.IsError() {
+		log.Println(httpResp.Error())
 		return nil, fmt.Errorf("meta error: %s", httpResp.Status())
 	}
 

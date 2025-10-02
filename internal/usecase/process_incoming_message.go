@@ -32,14 +32,12 @@ func NewProcessIncomingMessageUseCase(titoClient tito.ITitoClient, whatsappClien
 
 func (uc *ProcessIncomingMessageUseCase) Run(ctx context.Context, message string) error {
 	res, err := uc.titoClient.SendMessage(ctx, message)
-	log.Println(message)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
 
 	s := fmt.Sprintf("%v", res)
-
 	_, err = uc.whatsappClient.SendWhatsappMessage(ctx, whatsapp.MetaSendWhatsappMessageBody{
 		MessagingProduct: "whatsapp",
 		RecipientType:    "individual",
@@ -51,6 +49,7 @@ func (uc *ProcessIncomingMessageUseCase) Run(ctx context.Context, message string
 		},
 	})
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 

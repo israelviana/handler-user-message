@@ -3,6 +3,7 @@ package webhook
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -77,18 +78,18 @@ func (w *WebhookHandler) HandleWebhook(c *gin.Context) {
 					defer cancel()
 
 					for _, message := range ch.Value.Messages {
-						fmt.Println(message.Text.Body)
+						log.Println(message.Text.Body)
 						if err := w.processIncomingMessage.Run(jobCtx, message.Text.Body); err != nil {
-							fmt.Println("error processing incoming message:", err)
+							log.Println("error processing incoming message:", err)
 						}
 					}
 
 				}(ch, ctx)
-
+				continue
 			case "statuses":
-				fmt.Println(change.Value)
+				log.Println(change.Value)
 			default:
-				fmt.Println(change.Value)
+				log.Println(change.Value)
 			}
 		}
 	}
