@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 
@@ -37,21 +38,34 @@ func (uc *ProcessIncomingMessageUseCase) Run(ctx context.Context, message string
 		return err
 	}
 
-	s := fmt.Sprintf("%v", res)
-	_, err = uc.whatsappClient.SendWhatsappMessage(ctx, whatsapp.MetaSendWhatsappMessageBody{
-		MessagingProduct: "whatsapp",
-		RecipientType:    "individual",
-		To:               "85997267265",
-		Type:             "text",
-		Text: &whatsapp.MessageText{
-			PreviewUrl: false,
-			Body:       s,
-		},
-	})
-	if err != nil {
-		log.Println(err)
-		return err
+	if res != nil {
+		m, ok := res.(map[string]interface{})
+		if !ok {
+			return errors.New("res is not a map[string]interface{}")
+		}
+
+		answer, ok := m["answer"].(string)
+		if ok {
+			fmt.Println(answer)
+		} else {
+			log.Println("answer is not string")
+		}
+
+		_, err = uc.whatsappClient.SendWhatsappMessage(ctx, whatsapp.MetaSendWhatsappMessageBody{
+			MessagingProduct: "whatsapp",
+			RecipientType:    "individual",
+			To:               sender,
+			Type:             "text",
+			Text: &whatsapp.MessageText{
+				PreviewUrl: false,
+				Body:       answer,
+			},
+		})
+		if err != nil {
+			log.Println(err)
+			return err
+		}
 	}
 
-	return nil
+	return errors.New("error to call chat bot service")
 }

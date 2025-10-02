@@ -78,7 +78,6 @@ func (w *WebhookHandler) HandleWebhook(c *gin.Context) {
 					defer cancel()
 
 					for index, message := range ch.Value.Messages {
-						log.Println(change.Value.Contacts[index])
 						if err := w.processIncomingMessage.Run(jobCtx, message.Text.Body, change.Value.Contacts[index].WAID); err != nil {
 							log.Println("error processing incoming message:", err)
 						}
